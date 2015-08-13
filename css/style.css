@@ -1,0 +1,81 @@
+body{
+	font-family: sans-serif;
+	text-align: center;
+}
+.top_button{
+	display: inline-block;
+	width: 200px;
+	height: 50px;
+	background-color: red;
+	border-radius: 2px;
+	/*left:-100px;*/
+	/*margin-left: 50%;*/
+}
+
+.input-file{
+	background-color: blue;
+	/*height: 50px;*/
+	/*width: 200px;*/
+	padding: 0;
+	margin: 0;
+	/*border-radius: 50%;*/
+	margin: -50px 0 0 0px;
+	overflow: auto;
+	opacity: 0;
+}
+.input-file-trigger {
+	display: inline-block;
+	background-color: red;
+	border:1px solid white;
+	border-radius: 3px;
+	padding: 0;
+	width: 200px;
+	height: 50px;
+	line-height: 49px;
+	color: white;
+	/*top:100px;*/
+}
+.input-file-trigger:hover{
+	border:1px solid red;
+	background-color: white;
+	color: red;
+}
+.input-file-container{
+	display: inline-block;
+	/*position: relative;*/
+	/*margin-top: 80px;*/
+	width: 200px;
+	/*border-radius: 50%;*/
+	/*left: 95%;*/
+	/*margin-left: -45px;*/
+	z-index: 10;
+}
+.group{
+	display: inline-block;
+}
+input[name=texte]{
+	height: 46px;
+	border:1px solid red;
+	outline: none;
+	/*padding-left: 10px;*/
+	text-align: center;
+	/*margin-left: -3px;*/
+
+}
+input[name=submit]{
+	height: 50px;
+	border-radius: 3px;
+	border:1px solid white;
+	background-color: #8BC34A;
+	color: white;
+}
+.container_pic{
+	width: 100%;
+}
+.container_pic img{
+	border:1px solid black;
+	width: 300px;
+	height: 200px;
+	display: inline-block;
+	margin: 15px 10px;
+}
