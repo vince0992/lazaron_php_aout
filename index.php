@@ -53,7 +53,7 @@ $ip = '100';
 $date_envoie = '2015-08-25 04:16:32';
 $message = 'coucou';
 
-$sth = $connexion->prepare('INSERT INTO pictures VALUES :id, :nom, :extension, :taille, :ip, :date_envoie, :message');
+$sth = $connexion->prepare('INSERT INTO pictures (id, nom, extension, taille, ip, date_envoie, message) VALUES :id, :nom, :extension, :taille, :ip, :date_envoie, :message');
     
 $sth->bindValue('id', $id);
 $sth->bindValue('nom', $nom);
