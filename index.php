@@ -45,7 +45,6 @@ if (isset($_POST['submit']))
         // $stmt->execute();
 
         /* Exécute une requête préparée en associant des variables PHP */
-$id = '3';
 $nom = 'rouge';
 $extension = 'png';
 $taille = 150;
@@ -53,9 +52,8 @@ $ip = '100';
 $date_envoie = '2015-08-25 04:16:32';
 $message = 'coucou';
 
-$sth = $connexion->prepare('INSERT INTO pictures (id, nom, extension, taille, ip, date_envoie, message) VALUES :id, :nom, :extension, :taille, :ip, :date_envoie, :message');
+$sth = $connexion->prepare('INSERT INTO pictures (nom, extension, taille, ip, date_envoie, message) VALUES :nom, :extension, :taille, :ip, :date_envoie, :message');
     
-$sth->bindValue('id', $id);
 $sth->bindValue('nom', $nom);
 $sth->bindValue('extension', $extension);
 $sth->bindValue('taille', $taille);
@@ -73,7 +71,7 @@ var_dump($sth->execute());
 
             	<div class="input-file-container">  
             		<input class="input-file" id="my-file" type="file" name="photo_cover" required accept="image/*">
-            		<label tabindex="0" for="my-file" class="input-file-trigger">choisissez votre photo</label>
+            		<label tabindex="0" for="my-file" class="input-file-trigger">choisissez votre photo!!</label>
             	</div>
 
             	<div class="group"> 
