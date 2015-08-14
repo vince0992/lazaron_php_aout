@@ -15,54 +15,55 @@ error_reporting(E_ALL);
         <?php include("config.php"); ?>
 
     <?php
-        // $nom = 'ma super photo';
-        // $extension = '.png';
-        // $taille = '.png';
-        // $ip = '.png';
-        // $date_envoie = '.png';
-        // $message = '.png';
+    // on check si le submit a été enclenché    
 if (isset($_POST['submit']))
 {
-        // $stmt = $connexion->query("INSERT INTO pictures VALUES ('', 'chien', 'chien', 'chien', 'chien', 'chien', 'chien')");
-        // $sth = $connexion->prepare("INSERT INTO pictures VALUES (:id, :nom, :extension, :taille, :ip, :date_envoie, :message)");
-        
-        // $stmt->bindValue('id', $id);
-        // $stmt->bindValue('nom', $nom);
-        // $stmt->bindValue('extension', $extension);
-        // $stmt->bindValue('taille', $taille);
-        // $stmt->bindValue('ip', $ip);
-        // $stmt->bindValue('date_envoie', $date_envoie);
-        // $stmt->bindValue('message', $message);
+        $extension = 'png';
+        $taille = 150;
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $message = $_POST['texte'];
+        $img = $_FILES['photo'];
 
-        // insertion d'une ligne
-        // $id = '';
-        // $nom = 'ma super photo';
-        // $extension = '.png';
-        // $taille = '.png';
-        // $ip = '.png';
-        // $date_envoie = '.png';
-        // $message = '.png';
-        // $stmt->execute();
 
-        /* Exécute une requête préparée en associant des variables PHP */
-$nom = 'rouge';
-$extension = 'png';
-$taille = 150;
-$ip = '100';
-$date_envoie = '2015-08-25 04:16:32';
-$message = 'coucou';
-
-$sth = $connexion->prepare('INSERT INTO pictures (nom, extension, taille, ip, date_envoie, message) VALUES :nom, :extension, :taille, :ip, :date_envoie, :message');
     
-$sth->bindValue('nom', $nom);
-$sth->bindValue('extension', $extension);
-$sth->bindValue('taille', $taille);
-$sth->bindValue('ip', $ip);
-$sth->bindValue('date_envoie', $date_envoie);
-$sth->bindValue('message', $message);
-var_dump($sth->execute());
-} else echo "problem";
+        
+    // on vérifie que le message et le fichier ont été entrés
+    if ($message && (!empty ($_FILES)))
+    {        
+        
+            $nom = time() . $img['name'];
+// on verifie si l extensio du fichier correspond a une image -> ne fonctionne pas pour aucune raison valable
+
+            // $ext = array('.png','.jpg','.jpeg','.gif','.PNG','.JPG','.JPEG','.GIF');
+            // $extension = strrchr($img,'.');
+
+            //     if (in_array($extension, $ext)) 
+            //         {
+            //             echo "Vous devez uploader un fichier de type png, jpg, jpeg ou gif";
+            //         }
+                    move_uploaded_file($img['tmp_name'], "img_photo/".$nom);
+
+
+        $sql = "INSERT INTO pictures (nom,extension,taille,ip,date_envoie,message) VALUES (:nom,:extension,:taille,:ip,NOW(),:message)";
+        $q = $connexion->prepare($sql);
+            
+        $q->bindValue('nom', $nom);
+        $q->bindValue('extension', $extension);
+        $q->bindValue('taille', $taille);
+        $q->bindValue('ip', $ip);
+        $q->bindValue('message', $message);
+        var_dump($q->execute());
+
+       
+
+        } else echo "Vous avez oublié votre image ou votre texte";
+
+
+
+}
     ?>
+
+
     <body>
 
     	<h1>Mon futur titre</h1>
@@ -70,12 +71,12 @@ var_dump($sth->execute());
                 
 
             	<div class="input-file-container">  
-            		<input class="input-file" id="my-file" type="file" name="photo_cover" required accept="image/*">
+            		<input class="input-file" id="my-file" type="file" name="photo" required accept="image/*">
             		<label tabindex="0" for="my-file" class="input-file-trigger">choisissez votre photo!!</label>
             	</div>
 
             	<div class="group"> 
-            		<input type="text" name="texte"placeholder="Votre texte" required>
+            		<input type="text" name="texte" maxlength="16" placeholder="Votre texte" required>
             	</div>
                    
 
@@ -85,17 +86,26 @@ var_dump($sth->execute());
 
         </form>
         <div class="container_pic">
-                    <img src="" alt="">
-                    <img src="" alt="">
-                    <img src="" alt="">
-                    <img src="" alt="">
-                    <img src="" alt="">
-                    <img src="" alt="">
-                    <img src="" alt="">
-                    <img src="" alt="">
-                    <img src="" alt="">
-                    <img src="" alt="">
-                    <img src="" alt="">
+
+            <?php
+             // On récupère le contenu de ma table
+        $reponse = $connexion->query('SELECT * FROM pictures');
+
+            // On affiche les données tant qu'il y en a
+        while ($donnees = $reponse->fetch())
+{
+?>
+                    <div class="photo">
+                        <img src="img_photo/<?php echo $donnees['nom']; ?>" alt="">
+                        <p><?php echo $donnees ['message']?></p>
+                    </div>
+                    <?php
+}
+
+$reponse->closeCursor(); // fin de la requête
+
+?>
+                    
                 </div>
         <script>
 

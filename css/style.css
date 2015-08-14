@@ -73,9 +73,26 @@ input[name=submit]{
 	width: 100%;
 }
 .container_pic img{
-	border:1px solid black;
 	width: 300px;
-	height: 200px;
+	/*height: 200px;*/
 	display: inline-block;
 	margin: 15px 10px;
+	-moz-box-shadow: 2px 4px 10px 0px rgba(0,0,0,0.15);
+	-webkit-box-shadow: 2px 4px 10px 0px rgba(0,0,0,0.15);
+	-o-box-shadow: 2px 4px 10px 0px rgba(0,0,0,0.15);
+	box-shadow: 2px 4px 10px 0px rgba(0,0,0,0.15);
+}
+p{
+	margin: 0;
+	font-size: 30px;
+	color: white;
+	position: relative;
+	display: inline-block;
+	top: -80px;
+	text-shadow: 2px 2px 1px rgba(0,0,0,0.50);
+
+}
+.photo{
+	width: 320px;
+	display: inline-block;
 }
