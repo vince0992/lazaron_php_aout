@@ -1,18 +1,19 @@
-<?php 
-ini_set('display_errors', 1); 
-error_reporting(E_ALL); 
-?>
 <!doctype html>
 <html>
     <?php include("include_header.php"); ?>
         <?php include("config.php"); ?>
 
     <?php
+    // honeypot
+    $what = $_POST['myname'];
+    if ($what !='') {
+    die;
+}
+
     // on check si le submit a été enclenché    
 if (isset($_POST['submit']))
 {
-        $extension = 'png';
-        $taille = 150;
+   
         $ip = $_SERVER['REMOTE_ADDR'];
         $message = $_POST['texte'];
         $img = $_FILES['photo'];
@@ -23,7 +24,7 @@ if (isset($_POST['submit']))
     // on vérifie que le message et le fichier ont été entrés
     if ($message && (!empty ($_FILES)))
     {        
-        
+        //definition du nom de l image
             $nom = time() . $img['name'];
 // on verifie si l extension du fichier correspond a une image -> ne fonctionne pas pour aucune raison valable
 
@@ -34,9 +35,10 @@ if (isset($_POST['submit']))
             //         {
             //             echo "Vous devez uploader un fichier de type png, jpg, jpeg ou gif";
             //         }
+            //deplacement de l image dans le dossier
                     move_uploaded_file($img['tmp_name'], "img_photo/".$nom);
 
-
+//on insere les donnees dans la bdd
         $sql = "INSERT INTO pictures (nom,extension,taille,ip,date_envoie,message) VALUES (:nom,:extension,:taille,:ip,NOW(),:message)";
         $q = $connexion->prepare($sql);
             
@@ -54,7 +56,8 @@ if (isset($_POST['submit']))
     <body>
         <div class="rien"></div>
 
-    	<h1>Mon futur titre</h1>
+    	<h1>Phototext</h1>
+        <a class="ad" href="administration.php">administrateur?</a>
      	<form id ="picture" method="post" action="index.php" enctype="multipart/form-data" accept="image/*">
                 
 
@@ -65,6 +68,7 @@ if (isset($_POST['submit']))
 
             	<div class="group"> 
             		<input type="text" name="texte" maxlength="16" placeholder="Votre texte" required>
+                    <input class="myname" type="text" name="myname">
             	</div>    
 
 				<input type="submit" name="submit" value="Envoi" id="confirm">
@@ -73,7 +77,7 @@ if (isset($_POST['submit']))
         <div class="container_pic">
 
             <?php
-             // On récupère le contenu de ma table
+             // On récupère le contenu de la table
         $reponse = $connexion->query('SELECT * FROM pictures ORDER BY id DESC');
 
             // On affiche les données tant qu'il y en a
@@ -92,7 +96,6 @@ if (isset($_POST['submit']))
 
 
 
-                    <p class="voir_ip">ip de l'utilisateur est <?php echo $donnees['ip'];?></p>
                     <?php
 }
 
@@ -104,10 +107,6 @@ $reponse->closeCursor(); // fin de la requête
             <script src="js/main.js" type="text/javascript"></script>
 
         
-
-        <?php
-print_r($connexion->errorInfo());
-?>
     </body>
 </html>
 
