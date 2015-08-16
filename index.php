@@ -39,15 +39,13 @@ if (isset($_POST['submit']))
                     move_uploaded_file($img['tmp_name'], "img_photo/".$nom);
 
 //on insere les donnees dans la bdd
-        $sql = "INSERT INTO pictures (nom,extension,taille,ip,date_envoie,message) VALUES (:nom,:extension,:taille,:ip,NOW(),:message)";
+        $sql = "INSERT INTO pictures (nom,ip,date_envoie,message) VALUES (:nom,:ip,NOW(),:message)";
         $q = $connexion->prepare($sql);
             
         $q->bindValue('nom', $nom);
-        $q->bindValue('extension', $extension);
-        $q->bindValue('taille', $taille);
         $q->bindValue('ip', $ip);
         $q->bindValue('message', $message);
-        var_dump($q->execute());
+        $q->execute();
 
         } else echo "Vous avez oublié votre image ou votre texte";
 }
