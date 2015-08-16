@@ -4,14 +4,7 @@ error_reporting(E_ALL);
 ?>
 <!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>PHP upload picture</title>
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="author" href="humans.txt">
-    </head>
+    <?php include("include_header.php"); ?>
         <?php include("config.php"); ?>
 
     <?php
@@ -32,7 +25,7 @@ if (isset($_POST['submit']))
     {        
         
             $nom = time() . $img['name'];
-// on verifie si l extensio du fichier correspond a une image -> ne fonctionne pas pour aucune raison valable
+// on verifie si l extension du fichier correspond a une image -> ne fonctionne pas pour aucune raison valable
 
             // $ext = array('.png','.jpg','.jpeg','.gif','.PNG','.JPG','.JPEG','.GIF');
             // $extension = strrchr($img,'.');
@@ -54,17 +47,12 @@ if (isset($_POST['submit']))
         $q->bindValue('message', $message);
         var_dump($q->execute());
 
-       
-
         } else echo "Vous avez oublié votre image ou votre texte";
-
-
-
 }
     ?>
 
-
     <body>
+        <div class="rien"></div>
 
     	<h1>Mon futur titre</h1>
      	<form id ="picture" method="post" action="index.php" enctype="multipart/form-data" accept="image/*">
@@ -72,33 +60,39 @@ if (isset($_POST['submit']))
 
             	<div class="input-file-container">  
             		<input class="input-file" id="my-file" type="file" name="photo" required accept="image/*">
-            		<label tabindex="0" for="my-file" class="input-file-trigger">choisissez votre photo!!</label>
+            		<label tabindex="0" for="my-file" class="input-file-trigger">choisissez votre photo</label>
             	</div>
 
             	<div class="group"> 
             		<input type="text" name="texte" maxlength="16" placeholder="Votre texte" required>
-            	</div>
-                   
+            	</div>    
 
 				<input type="submit" name="submit" value="Envoi" id="confirm">
-
-				
 
         </form>
         <div class="container_pic">
 
             <?php
              // On récupère le contenu de ma table
-        $reponse = $connexion->query('SELECT * FROM pictures');
+        $reponse = $connexion->query('SELECT * FROM pictures ORDER BY id DESC');
 
             // On affiche les données tant qu'il y en a
         while ($donnees = $reponse->fetch())
 {
 ?>
                     <div class="photo">
-                        <img src="img_photo/<?php echo $donnees['nom']; ?>" alt="">
+                        <img class="pic" src="img_photo/<?php echo $donnees['nom']; ?>" alt="">
                         <p><?php echo $donnees ['message']?></p>
+
+                        <form class="form2" method="post" action="update_exec.php">
+                            <input name="recupere_ip" type="hidden" value="<?php echo $donnees['ip'] ?>">
+                             <input class="bouton" type="submit" name="update_ip" value="Voir toutes les photos de cette personne">
+                        </form>
                     </div>
+
+
+
+                    <p class="voir_ip">ip de l'utilisateur est <?php echo $donnees['ip'];?></p>
                     <?php
 }
 
@@ -107,11 +101,16 @@ $reponse->closeCursor(); // fin de la requête
 ?>
                     
                 </div>
-        <script>
+            <script src="js/main.js" type="text/javascript"></script>
 
-        </script>
+        
+
         <?php
 print_r($connexion->errorInfo());
 ?>
     </body>
 </html>
+
+
+
+
